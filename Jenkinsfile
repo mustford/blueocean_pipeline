@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        echo 'Installing dependencies'
+        echo 'Installing dependencies...'
         sh 'node -v'
         sh 'npm -v'
         sh 'npm i'
