@@ -12,21 +12,17 @@ pipeline {
         sh 'npm -v'
         sh 'npm i'
       }
-    }
-  }
-  stages {
-    stage('test') {
-      steps {
-        echo 'Testing app'
-        sh 'npm test'
+      stage('test') {
+        steps {
+          echo 'Testing app'
+          sh 'npm test'
+        }
       }
-    }
-  }
-  stages {
-    stage('deploy') {
-      steps {
-        echo 'Deploying app'
-        sh 'npm test'
+      stage('deploy') {
+        steps {
+          echo 'Deploying app'
+          sh 'npm test'
+        }
       }
     }
   }
