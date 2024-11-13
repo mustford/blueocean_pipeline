@@ -3,6 +3,14 @@ pipeline {
     docker {
       image 'node:20.18-alpine'
       args '--user root'
+      volumes {
+        volume '/var/run/docker.sock:/var/run/docker.sock'
+        volume '/usr/bin/docker:/usr/bin/docker'
+        volume '/usr/local/bin/minikube:/usr/local/bin/minikube'
+        volume '/usr/local/bin/kubectl:/usr/local/bin/kubectl'
+        volume '/root/.kube:/root/.kube'
+        volume '/root/.minikube:/root/.minikube'
+      }
     }
   }
 
