@@ -127,8 +127,8 @@ def deployToLocal(env) {
   // Continue with the deployment process
   sh '''
     echo "Building Docker image"
-    docker build -t <MINIKUBE_IMAGE_REPO>/my-image:latest .
-    docker push <MINIKUBE_IMAGE_REPO>/my-image:latest
+    docker build -t ${MINIKUBE_IMAGE_REPO}/my-image:latest .
+    docker push ${MINIKUBE_IMAGE_REPO}/my-image:latest
     kubectl config use-context minikube
     helm upgrade --install my-app ./chart --set image.repository=my-app,image.tag=latest
   '''
