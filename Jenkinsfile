@@ -56,7 +56,7 @@ pipeline {
         not { triggeredBy 'manual' }
       }
       steps {
-        input message: "Deploy to Staging?", ok: "Proceed to Deploy"
+        // input message: "Deploy to Staging?", ok: "Proceed to Deploy"
         deployToAWS('stage')
       }
     }
@@ -66,7 +66,7 @@ pipeline {
         not { triggeredBy 'manual' }
       }
       steps {
-        input message: "Deploy to Prod?", ok: "Proceed to Deploy"
+        // input message: "Deploy to Prod?", ok: "Proceed to Deploy"
         deployToAWS('prod')
       }
     }
