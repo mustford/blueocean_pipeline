@@ -10,7 +10,7 @@ pipeline {
         //AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
         //AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION = 'us-east-1'
-        //BITBUCKET_ACCESS_TOKEN = credentials('bitbucket-access-token')
+        //BITBUCKET_ACCESS_TOKEN = credentials('bitbucket-access-token')1
         MINIKUBE_IMAGE_REPO = 'localhost:5000'
   }
 
