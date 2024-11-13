@@ -62,7 +62,6 @@ pipeline {
         }
       }
       steps {
-        input message: "Deploy to Staging?", ok: "Proceed to Deploy"
         deployToAWS('stage')
       }
     }
