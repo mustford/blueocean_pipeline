@@ -11,9 +11,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-1'
         //BITBUCKET_ACCESS_TOKEN = credentials('bitbucket-access-token')
   }
-  options {
-    allowStagesToRunOnFailed()
-  }
+
   stages {
     stage('Build, Test, Lint') {
       parallel {
@@ -54,9 +52,10 @@ pipeline {
       }
     }
     stage('Deploy to STAGE') {
-      anyOf {
-        triggeredBy 'manual'
-        branch 'none'
+      when {
+        expression {
+          currentBuild.getBuildCauses().any { it.shortDescription == 'Started by user' } || false
+        }
       }
       steps {
         input message: "Deploy to Staging?", ok: "Proceed to Deploy"
@@ -64,9 +63,10 @@ pipeline {
       }
     }
     stage('Deploy to PROD') {
-      anyOf {
-        triggeredBy 'manual'
-        branch 'none'
+      when {
+        expression {
+          currentBuild.getBuildCauses().any { it.shortDescription == 'Started by user' } || false
+        }
       }
       steps {
         input message: "Deploy to Prod?", ok: "Proceed to Deploy"
