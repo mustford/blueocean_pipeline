@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'node:20.18-alpine'
-      args '--user root -v /root/.minikube:/root/.minikube -v /root/.kube:/root/.kube -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /usr/local/bin/minikube:/usr/local/bin/minikube -v /usr/local/bin/kubectl:/usr/local/bin/kubectl -v '
+      args '--user root -v /root/.minikube:/root/.minikube -v /root/.kube:/root/.kube -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /usr/local/bin/minikube:/usr/local/bin/minikube -v /usr/local/bin/kubectl:/usr/local/bin/kubectl'
     }
   }
 
