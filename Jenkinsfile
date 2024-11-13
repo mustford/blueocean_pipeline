@@ -45,8 +45,10 @@ pipeline {
     }
     stage('Deploy to DEV') {
       when {
-        branch 'dev'
-        branch 'main'
+        anyOf {
+          branch 'dev'
+          branch 'main'
+        }
       }
       steps {
         deployToAWS('dev')
@@ -54,8 +56,10 @@ pipeline {
     }
     stage('Deploy to STAGE') {
       when {
-        branch 'stage'
-        branch 'main'
+        anyOf {
+          branch 'stage'
+          branch 'main'
+        }
       }
       steps {
         input message: "Deploy to Staging?", ok: "Proceed to Deploy"
