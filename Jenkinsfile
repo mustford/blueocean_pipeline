@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'node:20.18-alpine'
-      // image 'node:20.18-slim'
+      args '--user root'
     }
   }
 
