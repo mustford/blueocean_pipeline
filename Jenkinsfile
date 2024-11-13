@@ -10,6 +10,7 @@ pipeline {
         //AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION = 'us-east-1'
         //BITBUCKET_ACCESS_TOKEN = credentials('bitbucket-access-token')
+        MINIKUBE_IMAGE_REPO = 'localhost:5000'
   }
 
   stages {
@@ -62,7 +63,6 @@ pipeline {
         }
       }
       steps {
-        input message: "Deploy to Staging?", ok: "Proceed to Deploy"
         deployToAWS('stage')
       }
     }
@@ -75,6 +75,17 @@ pipeline {
         deployToAWS('prod')
       }
     }
+    stage('Local Deploy (Minikube)') {
+      when {
+        branch 'main' 
+      }
+      steps {
+        script {
+          input message: "Deploy to Local?", ok: "Proceed to Deploy"
+          deployToLocal('local')
+        }
+      }
+    }
   }
 }
 
@@ -82,10 +93,42 @@ def deployToAWS(env) {
     sh '''
     echo "Building Docker image"
     #docker build -t "blueocean:$BUILD_NUMBER" -t blueocean .
-
+    
+    #Remote operations with ECR and EKS
     echo "Pushing Docker image to AWS ECR"
     #aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin <ECR_REPO_URL>
     #docker tag blueocean:$BUILD_NUMBER <ECR_REPO_URL>:latest
     #docker push <ECR_REPO_URL>:latest
+
+    echo "Updating Kubernetes Deployment in EKS"
+    # Update kubeconfig to authenticate with the EKS cluster
+    #aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name <EKS_CLUSTER_NAME>
+    # Set the new image in the Kubernetes deployment
+    #kubectl set image deployment/<DEPLOYMENT_NAME> <CONTAINER_NAME>=<ECR_REPO_URL>:latest
+    # Verify the deployment rollout status
+    #kubectl rollout status deployment/<DEPLOYMENT_NAME>
     '''
+}
+
+def deployToLocal(env) {
+// Install Helm, AWS CLI, kubectl here
+  sh '''
+    apk add --no-cache curl bash
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+    #curl -s "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    #unzip awscliv2.zip
+    #./aws/install
+    #apk add --no-cache kubectl
+  '''
+
+  // Continue with the deployment process
+  sh '''
+    echo "Building Docker image"
+    docker build -t <MINIKUBE_IMAGE_REPO>/my-image:latest .
+    docker push <MINIKUBE_IMAGE_REPO>/my-image:latest
+    kubectl config use-context minikube
+    helm upgrade --install my-app ./chart --set image.repository=my-app,image.tag=latest
+  '''
 }
