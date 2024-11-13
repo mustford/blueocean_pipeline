@@ -53,6 +53,7 @@ pipeline {
     stage('Deploy to STAGE') {
       when {
         branch 'main'
+        not { triggeredBy 'manual' }
       }
       steps {
         input message: "Deploy to Staging?", ok: "Proceed to Deploy"
@@ -62,6 +63,7 @@ pipeline {
     stage('Deploy to PROD') {
       when {
         branch 'main'
+        not { triggeredBy 'manual' }
       }
       steps {
         input message: "Deploy to Prod?", ok: "Proceed to Deploy"
