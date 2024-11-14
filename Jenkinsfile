@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:20.18-alpine'
-      args '--user root -v /root/.minikube:/root/.minikube -v /root/.kube:/root/.kube -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /usr/local/bin/minikube:/usr/local/bin/minikube -v /usr/local/bin/kubectl:/usr/local/bin/kubectl'
-    }
-  }
+  agent any
 
   environment {
         //AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
@@ -16,6 +11,11 @@ pipeline {
 
   stages {
     stage('Build, Test, Lint') {
+      agent {
+        docker {
+          image 'node:20.18-alpine'
+        }
+      }
       parallel {
         stage('Build') {
           steps {
@@ -114,10 +114,16 @@ def deployToAWS(env) {
 def deployToLocal(env) {
 // Install Helm, AWS CLI, kubectl here
   sh '''
-    apk update && apk add --no-cache curl bash openssl
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
+    #apk update && apk add --no-cache curl bash openssl
+    if ! command -v helm &> /dev/null; then
+      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+      chmod 700 get_helm.sh
+      ./get_helm.sh
+    else
+      echo "Helm is already installed."
+      helm version
+    fi
+
     #curl -s "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     #unzip awscliv2.zip
     #./aws/install
