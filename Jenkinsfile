@@ -29,20 +29,24 @@ pipeline {
             '''
           }
         }
-        stage('Lint') {
-          steps {
-            echo 'Check code with linter...'
-          }
-        }
-        stage('Test') {
-          steps {
-            echo 'Testing app'
-            sh 'npm test'
-          }
-        }
-        stage('Test Coverage') {
-          steps {
-            echo 'Test coverage report'
+        stage('Lint, Test') {
+          parallel {
+            stage('Lint') {
+              steps {
+                echo 'Check code with linter...'
+              }
+            }
+            stage('Test') {
+              steps {
+                echo 'Testing app'
+                sh 'npm test'
+              }
+            }
+            stage('Test Coverage') {
+              steps {
+                echo 'Test coverage report'
+              }
+            }
           }
         }
       }
