@@ -132,6 +132,7 @@ def deployToLocal(env) {
       sed -i 's|sudo||g' get_helm.sh
       #ln -s /opt/helm/helm /usr/bin/helm
       sed -i 's|/usr/local/bin|/opt/helm|g' get_helm.sh
+      mkdir -p /opt/helm
       ./get_helm.sh
       helm version
     else
