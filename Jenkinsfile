@@ -47,6 +47,19 @@ pipeline {
         }
       }
     }
+    stage('Local Deploy (Minikube)') {
+      allOf {
+        // not { branch 'main' }
+        not { branch 'dev' }
+        not { branch 'stage' }
+      }
+      steps {
+        script {
+          input message: "Deploy to Local?", ok: "Proceed to Deploy"
+          deployToLocal('local')
+        }
+      }
+    }
     stage('Deploy to DEV') {
       when {
         anyOf {
@@ -76,17 +89,6 @@ pipeline {
       steps {
         input message: "Deploy to Prod?", ok: "Proceed to Deploy"
         deployToAWS('prod')
-      }
-    }
-    stage('Local Deploy (Minikube)') {
-      when {
-        branch 'main' 
-      }
-      steps {
-        script {
-          input message: "Deploy to Local?", ok: "Proceed to Deploy"
-          deployToLocal('local')
-        }
       }
     }
   }
@@ -120,7 +122,7 @@ def deployToLocal(env) {
     if ! command -v helm &> /dev/null; then
       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
       chmod 700 get_helm.sh
-      ./get_helm.sh
+      ./get_helm.sh --no-sudo
     else
       echo "Helm is already installed."
       helm version
