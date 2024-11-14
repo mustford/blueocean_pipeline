@@ -16,7 +16,7 @@ pipeline {
           image 'node:20.18-alpine'
         }
       }
-      parallel {
+      stages {
         stage('Build') {
           steps {
             sh '''
