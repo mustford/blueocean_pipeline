@@ -121,6 +121,7 @@ def deployToLocal(env) {
 // Install Helm, AWS CLI, kubectl here
   sh '''
     #apk update && apk add --no-cache curl bash openssl
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     if ! command -v helm &> /dev/null; then
       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
       chmod 700 get_helm.sh
