@@ -134,8 +134,7 @@ def deployToLocal(env) {
       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
       chmod 700 get_helm.sh
       sed -i 's|sudo||g' get_helm.sh
-      #ln -s /var/jenkins_home/bin/helm /usr/bin/helm
-      sed -i s|/usr/local/bin|/var/jenkins_home/bin/helm|g get_helm.sh
+      sed -i 's|/usr/local/bin|/var/jenkins_home/bin|g' get_helm.sh
       mkdir -p /var/jenkins_home/bin
       ./get_helm.sh
       helm version
