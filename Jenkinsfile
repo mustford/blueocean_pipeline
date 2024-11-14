@@ -52,6 +52,9 @@ pipeline {
       }
     }
     stage('Local Deploy (Minikube)') {
+      environment {
+        PATH = "/var/jenkins_home/bin:$PATH"
+      }
       when {
         allOf {
           // not { branch 'main' }
