@@ -122,14 +122,14 @@ def deployToLocal(env) {
   sh '''
     #apk update && apk add --no-cache curl bash openssl
     curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-    if ! command -v helm &> /dev/null; then
-      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-      chmod 700 get_helm.sh
-      ./get_helm.sh --no-sudo
-    else
-      echo "Helm is already installed."
+    #if ! command -v helm &> /dev/null; then
+    #  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    #  chmod 700 get_helm.sh
+    #  ./get_helm.sh --no-sudo
+    #else
+    #  echo "Helm is already installed."
       helm version
-    fi
+    #fi
 
     #curl -s "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     #unzip awscliv2.zip
