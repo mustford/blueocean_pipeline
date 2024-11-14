@@ -131,8 +131,8 @@ def deployToLocal(env) {
       chmod 700 get_helm.sh
       sed -i 's|sudo||g' get_helm.sh
       #ln -s /opt/helm/helm /usr/bin/helm
-      sed -i 's|/usr/local/bin|/opt/helm|g' get_helm.sh
-      mkdir -p /opt/helm
+      sed -i 's|/usr/local/bin|/var/jenkins_home/bin/helm|g' get_helm.sh
+      mkdir -p /var/jenkins_home/bin/helm
       ./get_helm.sh
       helm version
     else
