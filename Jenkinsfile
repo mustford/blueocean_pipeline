@@ -136,7 +136,7 @@ def deployToLocal(env) {
       ./get_helm.sh
       helm version
     else
-      echo "Helm is already installed."
+      echo "Helm is already installed"
       helm version
     fi
 
