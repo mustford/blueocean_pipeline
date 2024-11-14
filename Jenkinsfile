@@ -130,6 +130,7 @@ def deployToLocal(env) {
       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
       chmod 700 get_helm.sh
       sed -i 's|sudo||g' get_helm.sh
+      ln -s /opt/helm/helm /usr/bin/helm
       ./get_helm.sh
       helm version
     else
