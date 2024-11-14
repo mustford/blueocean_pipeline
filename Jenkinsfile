@@ -48,10 +48,12 @@ pipeline {
       }
     }
     stage('Local Deploy (Minikube)') {
-      allOf {
-        // not { branch 'main' }
-        not { branch 'dev' }
-        not { branch 'stage' }
+      when {
+        allOf {
+          // not { branch 'main' }
+          not { branch 'dev' }
+          not { branch 'stage' }
+        }
       }
       steps {
         script {
