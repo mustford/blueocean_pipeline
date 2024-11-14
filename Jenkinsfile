@@ -53,7 +53,7 @@ pipeline {
     }
     stage('Local Deploy (Minikube)') {
       environment {
-        PATH = "/var/jenkins_home/bin:$PATH"
+        PATH = "/var/jenkins_home/bin/helm:$PATH"
       }
       when {
         allOf {
@@ -135,7 +135,7 @@ def deployToLocal(env) {
       chmod 700 get_helm.sh
       sed -i 's|sudo||g' get_helm.sh
       #ln -s /var/jenkins_home/bin/helm /usr/bin/helm
-      sed -i 's|/usr/local/bin/helm|/var/jenkins_home/bin|g' get_helm.sh
+      sed -i s|/usr/local/bin|/var/jenkins_home/bin/helm|g get_helm.sh
       mkdir -p /var/jenkins_home/bin
       ./get_helm.sh
       helm version
